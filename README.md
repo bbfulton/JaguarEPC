@@ -10,7 +10,9 @@ This project entails extracting data found in the dealer software package, trans
 I've split the R code up into 3 sections:
 
 -Part 1 involves moving the XML files into their corresponding directory based on the type of information they contain.
+
 -Part 2 extracts the data from each XML file (as I recall, there are 180,000 files total) and enters it into one of seven new data tables
+
 -Part 3 formats and normalizes the new data tables and recombines them for use in the application noted above
 
 
