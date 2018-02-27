@@ -3,7 +3,8 @@
 <b>Summary</b>:  Extracting images and data from XML files for use in internal parts catalog lookup application
 
 <b>Application URL</b>:  https://bbfulton.shinyapps.io/JaguarEPCLookup/
-Examples to use:  aj88912, cac9295, xr817754
+
+Examples to use in app:  aj88912, cac9295, xr817754
 
 <b>Abstract</b>:  In the automotive parts industry, a good parts catalog is essential for a multitude of reasons.  Unfortunately, outside of the dealer network, there is very little support for a business product for small companies such as ours; most major parts suppliers are large-scale operations that spend millions of dollars in developing and maintaining adequate parts catalogs for the makes/models that they deal with.  That leaves smaller companies (such as ours) with very few options.  In the past, this wasn't a huge limitation as the older dealership software was readily available for public use once it became obsolete for their purposes (which was primarily to sell parts for brand new cars) but was still quite suitable for everyone else.  However, with technological advancements in automobiles also came more robust point of sale catalogs, ordering systems and integration in general, thereby necessitating greater security in software.  As such, while versions of dealer catalogs are still available, they all have been stripped of various features with made them useful in the first place.
 
