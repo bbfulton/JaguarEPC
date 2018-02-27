@@ -177,7 +177,7 @@ tl &lt;- suppressWarnings(
                into = c(&quot;itemno&quot;, &quot;partname&quot;), 
                sep = &quot;,&quot;))
 tl$itemno &lt;- as.integer(tl$itemno)</code></pre>
-<p>Reassigning name of tl to finaltl to indicate that this data.frame is finalized</p>
+<p>Reassigning name of tl to finaltl to indicate that this data.frame is ready for the next stage. Unnecessary, but when dealing with multiple output tables, it’s something that I tend to do just for my own organization.</p>
 <pre class="r"><code>finaltl &lt;- tl</code></pre>
 <p>Removing unneeded objects from memory</p>
 <pre class="r"><code>rm(tl);rm(c1);rm(c2);rm(coln)</code></pre>
@@ -225,7 +225,7 @@ catab$catname &lt;- gsub(&quot;\\d|,&quot;, &quot;&quot;, catab$catname)</code><
 <pre class="r"><code>catab &lt;- catab %&gt;% 
          mutate(cathead = paste(header, &quot;/&quot;, catname), sep = &quot;&quot;) %&gt;% 
          select(m, c, cathead)</code></pre>
-<p>Renaming data.frame to indicate that it’s finalized</p>
+<p>Renaming data.frame to indicate that it’s “finalized”&quot;</p>
 <pre class="r"><code>finalcat &lt;- catab</code></pre>
 <p>Removing unneeded objects</p>
 <pre class="r"><code>rm(cat); rm(catb); rm(cata); rm(catab)</code></pre>
@@ -262,6 +262,7 @@ head(item, 3)</code></pre>
 ## 2                                                                                                                                                        c(&quot;&quot;, &quot;[2,12001,'4.2 Litre supercharged',0,0,0,0,0,0,0,'0',0]&quot;, &quot;[12001,120010001,'',1115,'NCC7708AB',0,0,0,'pb_02NCC7708AB',0,'1',1224]&quot;)
 ## 3                                                                                                                                                          c(&quot;&quot;, &quot;[3,13001,'4.2 Litre supercharged',0,0,0,0,0,0,0,'0',0]&quot;, &quot;[13001,130010001,'',1028,'EAZ2159',0,0,0,'pb_02EAZ  2159',0,'4',1047]&quot;)</code></pre>
 <p>Separating all of the raw data from the ‘item’ table, cleaning it, and reformatting it in a more useful way. Messy coding here! Don’t look!</p>
+<p>Edit: Looking back on it, this code could be a fair bit cleaner, but it works quickly enough for this relatively small dataset. The part numbers are embedded in a long character string and are demarcated by the characters ‘pb_02’ or ‘pb_27’. Much of this could have been together, but at the time, I wasn’t sure how to make that work. Nevertheless, the code below extracts records in which the part numbers that are notated by ‘pb_02’ are saved to one table and those that are notated by ‘pb_27’ are saved to a different table. Those two tables are formatted so that category, subcategory and part numbers are in separate, usable fields and are then recombined back into the same table.</p>
 <pre class="r"><code>itemx &lt;- item[grep(&quot;.'pb_02.&quot;, item$data),]
 itemx &lt;- mutate(itemx, data = strsplit(as.character(data), &quot;,&quot;))
 itemx$data &lt;- gsub(&quot; &quot;, &quot;&quot;, itemx$data)
@@ -270,10 +271,8 @@ itemx &lt;- mutate(itemx, itemno = str_match(itemx$data, &quot;\\[[0-9]+&quot;))
 itemx$itemno &lt;- gsub(&quot;\\[|,&quot;, &quot;&quot;, itemx$itemno)
 y &lt;- as.data.frame(t(as.data.frame(t(str_match_all(itemx$data, &quot;'pb_02[0-9A-Za-z]+'&quot;)))))
 names(y) &lt;- c(&quot;partno&quot;)
-z &lt;- as.data.frame(cbind(itemx$m, itemx$c, itemx$itemno, y$partno))
-itemx &lt;- z
+itemx &lt;- as.data.frame(cbind(itemx$m, itemx$c, itemx$itemno, y$partno))
 rm(y)
-rm(z)
 names(itemx) &lt;- c(&quot;m&quot;, &quot;c&quot;, &quot;itemno&quot;, &quot;partno&quot;)
 itemx$partno &lt;- as.vector(gsub(&quot;c\\(|\\)|\&quot;|pb_02|'| &quot;, &quot;&quot;, itemx$partno))
 itemx &lt;- select(itemx, partno, itemno, m, c)
